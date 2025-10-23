@@ -27,7 +27,7 @@ const Home = () => {
             <div className="group cursor-pointer">
               <div className="aspect-square bg-square-gray-100 rounded-2xl overflow-hidden mb-6 group-hover:shadow-medium transition-all duration-300">
                 <img 
-                  src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  src="https://images.unsplash.com/photo-1724582586495-d050726cf354?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bGl2aW5nJTIwcm9vbSUyMG1vZGVybiUyMHNvZmF8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500"
                   alt="Modern Sofa"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -42,7 +42,7 @@ const Home = () => {
             <div className="group cursor-pointer">
               <div className="aspect-square bg-square-gray-100 rounded-2xl overflow-hidden mb-6 group-hover:shadow-medium transition-all duration-300">
                 <img 
-                  src="https://images.unsplash.com/photo-1631889992187-201a3ab0c9d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  src="https://images.unsplash.com/photo-1617098900591-3f90928e8c54?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmVkcm9vbXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500"
                   alt="Modern Bedroom"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />

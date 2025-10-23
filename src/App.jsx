@@ -14,7 +14,7 @@ import './App.css';
 function App() {
   return (
     <CartProvider>
-      <Router>
+      <Router basename="/furnicraft">
         <div className="min-h-screen bg-white">
           {/* <Header /> */}
           <Navbar />

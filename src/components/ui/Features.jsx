@@ -83,7 +83,7 @@ const Features = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-16">
+        {/* <div className="text-center mt-16">
           <div className="inline-flex items-center space-x-8 bg-white rounded-xl p-8 shadow-sm border">
             <div className="text-center">
               <div className="text-3xl font-bold text-black">50k+</div>
@@ -100,7 +100,7 @@ const Features = () => {
               <div className="text-gray-600">Average Rating</div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

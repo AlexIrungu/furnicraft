@@ -54,7 +54,7 @@ const Hero = () => {
               </div>
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <Check className="w-4 h-4 text-green-600" />
-                <span>10-year warranty</span>
+                <span>1-year warranty</span>
               </div>
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <Check className="w-4 h-4 text-green-600" />
@@ -75,7 +75,7 @@ const Hero = () => {
             </div>
             
             {/* Floating Stats Cards */}
-            <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-lg p-6 border max-w-xs">
+            {/* <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-lg p-6 border max-w-xs">
               <div className="flex items-center space-x-4">
                 <div className="bg-green-100 p-3 rounded-lg">
                   <Check className="w-6 h-6 text-green-600" />
@@ -85,14 +85,14 @@ const Hero = () => {
                   <div className="text-gray-600 text-sm">Happy Customers</div>
                 </div>
               </div>
-            </div>
+            </div> */}
             
-            <div className="absolute -top-6 -right-6 bg-white rounded-xl shadow-lg p-4 border">
+            {/* <div className="absolute -top-6 -right-6 bg-white rounded-xl shadow-lg p-4 border">
               <div className="text-center">
                 <div className="text-lg font-bold text-black">4.9★</div>
                 <div className="text-gray-600 text-xs">Customer Rating</div>
               </div>
-            </div>
+            </div> */}
             
             {/* Background Decoration */}
             <div className="absolute -z-10 -top-8 -right-8 w-32 h-32 bg-gray-100 rounded-full opacity-50"></div>

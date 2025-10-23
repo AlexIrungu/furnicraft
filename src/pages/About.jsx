@@ -126,7 +126,7 @@ const About = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="text-center">
               <div className="aspect-square bg-square-gray-100 rounded-2xl overflow-hidden mb-6">
                 <img 
@@ -174,25 +174,11 @@ const About = () => {
                 smooth from selection to delivery and beyond.
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-24 bg-square-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-4xl sm:text-5xl font-bold text-square-black mb-2">10+</div>
-              <p className="text-square-gray-600 font-medium">Years Experience</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl sm:text-5xl font-bold text-square-black mb-2">50+</div>
-              <p className="text-square-gray-600 font-medium">Expert Craftspeople</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* CTA Section */}
       <section className="py-24">
