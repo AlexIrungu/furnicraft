@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Search, ShoppingCart, X, Menu, Package, Home, Sofa, Bed, UtensilsCrossed, Briefcase, TreePine, Command } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Search, ShoppingCart, X, Menu, Package, Home, Sofa, Bed, UtensilsCrossed, Briefcase, TreePine, User, LogOut } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
+import { useAuth } from '../../context/AuthContext';
 
 // Debounce utility
 const useDebounce = (value, delay) => {
@@ -215,23 +216,70 @@ const CartDropdown = ({ isOpen, onClose, cartItems = [] }) => {
   );
 };
 
+// User Dropdown Component
+const UserDropdown = ({ isOpen, onClose, user, onLogout }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-gray-100 animate-scale-in z-50">
+      <div className="p-4 border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center flex-shrink-0">
+            <User className="w-4 h-4 text-white" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-sm text-gray-900 truncate">
+              {user.firstName} {user.lastName}
+            </p>
+            <p className="text-xs text-gray-500 truncate">{user.email}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-2">
+        <Link
+          to="/profile"
+          onClick={onClose}
+          className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
+        >
+          <User className="w-4 h-4" />
+          My Profile
+        </Link>
+        
+        <button
+          onClick={() => {
+            onLogout();
+            onClose();
+          }}
+          className="flex items-center gap-3 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
+        >
+          <LogOut className="w-4 h-4" />
+          Sign Out
+        </button>
+      </div>
+    </div>
+  );
+};
+
 // Main Navbar Component
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { cartItems } = useCart();
+  const { user, logout } = useAuth();
 
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  // Sample products for search (you'd pass real products from props or context)
+  // Sample products for search
   const products = [
     { id: 1, name: 'Modern Sofa', category: 'living-room', price: 1299 },
     { id: 2, name: 'Office Chair', category: 'office', price: 499 },
-    // Add more sample products
   ];
 
   useEffect(() => {
@@ -250,6 +298,11 @@ const Navbar = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const categories = [
     { name: 'Living Room', icon: Sofa, href: '/products?category=living-room', description: 'Sofas, tables & more' },
@@ -400,6 +453,49 @@ const Navbar = () => {
                   />
                 </div>
               </div>
+
+              {/* User Authentication Section */}
+              {user ? (
+                // User is logged in - Show user dropdown
+                <div className="relative">
+                  <button
+                    onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                    onMouseEnter={() => setIsUserDropdownOpen(true)}
+                    onMouseLeave={() => setIsUserDropdownOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-black hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
+                      <User className="w-3 h-3 text-white" />
+                    </div>
+                    <span className="font-medium">Hi, {user.firstName}</span>
+                  </button>
+                  
+                  <div onMouseEnter={() => setIsUserDropdownOpen(true)} onMouseLeave={() => setIsUserDropdownOpen(false)}>
+                    <UserDropdown 
+                      isOpen={isUserDropdownOpen} 
+                      onClose={() => setIsUserDropdownOpen(false)}
+                      user={user}
+                      onLogout={handleLogout}
+                    />
+                  </div>
+                </div>
+              ) : (
+                // User is not logged in - Show login/signup buttons
+                <div className="flex items-center space-x-2">
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-black hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="px-4 py-2 text-sm font-medium bg-black text-white hover:bg-gray-800 rounded-lg transition-colors"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
             </div>
 
             {/* Mobile Actions */}
@@ -422,6 +518,23 @@ const Navbar = () => {
                   </span>
                 )}
               </Link>
+
+              {/* Mobile User/Auth */}
+              {user ? (
+                <button
+                  onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                  className="p-2 text-gray-600 hover:text-black hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  <User className="w-5 h-5" />
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="p-2 text-gray-600 hover:text-black hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  <User className="w-5 h-5" />
+                </Link>
+              )}
               
               <button
                 onClick={() => setIsMenuOpen(true)}
@@ -498,6 +611,51 @@ const Navbar = () => {
                     })}
                   </div>
                 </div>
+
+                {/* Auth Section in Mobile Menu */}
+                <div className="pt-6 border-t border-gray-100">
+                  {user ? (
+                    <div className="space-y-2">
+                      <div className="px-4 py-2">
+                        <p className="font-semibold text-gray-900">Hi, {user.firstName}!</p>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-3 rounded-lg font-medium text-gray-700 hover:text-black hover:bg-gray-50 transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        My Profile
+                      </Link>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsMenuOpen(false);
+                        }}
+                        className="block w-full text-left px-4 py-3 rounded-lg font-medium text-gray-700 hover:text-black hover:bg-gray-50 transition-colors"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <Link
+                        to="/login"
+                        className="block px-4 py-3 rounded-lg font-medium text-gray-700 hover:text-black hover:bg-gray-50 transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Sign In
+                      </Link>
+                      <Link
+                        to="/register"
+                        className="block px-4 py-3 rounded-lg font-medium bg-black text-white hover:bg-gray-800 transition-colors text-center"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Sign Up
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </nav>
             </div>
           </div>
@@ -510,6 +668,47 @@ const Navbar = () => {
         onClose={() => setIsSearchOpen(false)}
         products={products}
       />
+
+      {/* Mobile User Dropdown */}
+      {isUserDropdownOpen && (
+        <div className="fixed inset-0 z-50 md:hidden" onClick={() => setIsUserDropdownOpen(false)}>
+          <div className="absolute top-16 right-4 w-48 bg-white rounded-xl shadow-2xl border border-gray-100 animate-scale-in">
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center flex-shrink-0">
+                  <User className="w-4 h-4 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm text-gray-900 truncate">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                </div>
+              </div>
+            </div>
+            <div className="p-2">
+              <Link
+                to="/profile"
+                onClick={() => setIsUserDropdownOpen(false)}
+                className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
+              >
+                <User className="w-4 h-4" />
+                My Profile
+              </Link>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsUserDropdownOpen(false);
+                }}
+                className="flex items-center gap-3 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
